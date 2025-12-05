@@ -1,0 +1,26 @@
+name: Deploy Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Watchly CLI
+        run: curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.13 sh
+
+      - name: Notify Watchly of deployment start
+        run: watchly-cli deployment start
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+
+      - name: Deploy
+        run: echo "Your deployment steps ..."
+
+      - name: Notify Watchly of deployment completion
+        run: watchly-cli deployment finish --status=successful
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
