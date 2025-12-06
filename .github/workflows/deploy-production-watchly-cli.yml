@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Notify Watchly of deployment start
         run: |
-          curl -X POST -H "Authorization: Bearer ${{ secrets.WATCHLY_API_KEY }}" \
+          curl -X POST -H "Authorization: Bearer ${{ secrets.WATCHLY_API_KEY_GH }}" \
             https://api.watchly.dev/api/v1/webhooks/deployments/start/${{ github.sha }}
 
       - name: Deploy
@@ -19,5 +19,5 @@ jobs:
 
       - name: Notify Watchly of deployment completion
         run: |
-          curl -X POST -H "Authorization: Bearer ${{ secrets.WATCHLY_API_KEY }}" \
+          curl -X POST -H "Authorization: Bearer ${{ secrets.WATCHLY_API_KEY_GH }}" \
             https://api.watchly.dev/api/v1/webhooks/deployments/finish/${{ github.sha }}
