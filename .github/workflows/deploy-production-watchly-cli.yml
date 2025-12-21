@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Watchly CLI
-        run: curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.13 sh
+        run: curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.14 sh
 
       - name: Notify Watchly of deployment start
         run: watchly-cli deployment start
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+          RELEASE_TAG: "1.0.0"
 
       - name: Deploy
         run: echo "Your deployment steps ..."
