@@ -12,7 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - id: deploy-check-cli
+      - id: deploy-check
         run: |
           curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.16 sh
           watchly-cli repository enabled >> "$GITHUB_OUTPUT"
@@ -20,11 +20,11 @@ jobs:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
 
       - name: Deploy if repository is enabled
-        if: steps.deploy-check-cli.outputs.enabled == 'true'
+        if: steps.deploy-check.outputs.enabled == 'true'
         run: echo "Your deployment steps ..."
 
       - name: Skip deployment if repository is not enabled
-        if: steps.deploy-check-cli.outputs.enabled == 'false'
+        if: steps.deploy-check.outputs.enabled == 'false'
         run: echo "Repository is not enabled for deployment"
 
       # - name: Notify Watchly of deployment start
