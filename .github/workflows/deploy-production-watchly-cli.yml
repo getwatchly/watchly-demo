@@ -1,6 +1,9 @@
 name: Deploy Production
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -9,19 +12,29 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Watchly CLI
-        run: curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.14 sh
+      - id: deploy-check-cli
+        run: |
+          curl https://www.watchly.dev/cli | WATCHLY_CLI_VERSION=0.0.16 sh
+          watchly-cli repository enabled >> "$GITHUB_OUTPUT"
 
-      - name: Notify Watchly of deployment start
-        run: watchly-cli deployment start
-        env:
-          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
-          RELEASE_TAG: "1.0.0"
-
-      - name: Deploy
+      - name: Deploy if repository is enabled
+        if: steps.deploy-check-cli.outputs.enabled == 'true'
         run: echo "Your deployment steps ..."
 
-      - name: Notify Watchly of deployment completion
-        run: watchly-cli deployment finish --status=successful
-        env:
-          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+      - name: Skip deployment if repository is not enabled
+        if: steps.deploy-check-cli.outputs.enabled == 'false'
+        run: echo "Repository is not enabled for deployment"
+
+      # - name: Notify Watchly of deployment start
+      #   run: watchly-cli deployment start
+      #   env:
+      #     WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+      #     RELEASE_TAG: "1.0.0"
+
+      # - name: Deploy
+      #   run: echo "Your deployment steps ..."
+
+      # - name: Notify Watchly of deployment completion
+      #   run: watchly-cli deployment finish --status=successful
+      #   env:
+      #     WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
