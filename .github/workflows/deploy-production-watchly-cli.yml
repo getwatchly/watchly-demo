@@ -27,6 +27,22 @@ jobs:
         if: steps.deploy-check.outputs.enabled == 'false'
         run: echo "Repository is not enabled for deployment"
 
+      - name: Freeze deployments
+        if: steps.deploy-check.outputs.enabled == 'true'
+        run: |
+          echo "Freezing deployments"
+          watchly-cli repository freeze
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+
+      - name: Unfreeze deployments
+        if: steps.deploy-check.outputs.enabled == 'false'
+        run: |
+          echo "Unfreezing deployments"
+          watchly-cli repository unfreeze
+        env:
+          WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
+
       # - name: Notify Watchly of deployment start
       #   run: watchly-cli deployment start
       #   env:
