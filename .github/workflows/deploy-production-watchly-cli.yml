@@ -16,7 +16,7 @@ jobs:
         run: watchly-cli deployment start
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
-          RELEASE_TAG: "1.0.0"
+          # RELEASE_TAG: "1.0.0"
 
       - name: Deploy
         run: echo "Your deployment steps ..."
