@@ -22,6 +22,6 @@ jobs:
         run: echo "Your deployment steps ..."
 
       - name: Notify Watchly of deployment completion
-        run: watchly-cli deployment finish --status=failed
+        run: watchly-cli deployment finish --status=successful
         env:
           WATCHLY_API_KEY: ${{ secrets.WATCHLY_API_KEY }}
